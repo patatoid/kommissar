@@ -22,13 +22,18 @@ config :kommissar, KommissarWeb.Endpoint,
   check_origin: false,
   watchers: [
     node: [
-      "node_modules/webpack/bin/webpack.js",
-      "--mode",
-      "development",
-      "--watch-stdin",
-      cd: Path.expand("../assets", __DIR__)
+      "node_modules/@vue/cli-service/bin/vue-cli-service.js",
+      "build",
+      "--watch",
+      cd: Path.expand("../assets/kommissar", __DIR__)
+    ]
+  ],
+  live_reload: [
+    patterns: [
+      ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
     ]
   ]
+
 
 # ## SSL Support
 #
