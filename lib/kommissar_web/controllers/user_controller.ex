@@ -3,6 +3,7 @@ defmodule KommissarWeb.UserController do
 
   alias Kommissar.Accounts
   alias Kommissar.Accounts.User
+  alias KommissarWeb.Guardian
 
   action_fallback KommissarWeb.FallbackController
 
@@ -17,6 +18,25 @@ defmodule KommissarWeb.UserController do
       |> put_status(:created)
       |> put_resp_header("location", Routes.user_path(conn, :show, user))
       |> render("show.json", user: user)
+    end
+  end
+
+  def login(conn, %{"username" => username, "password" => password}) do
+    with %User{} = user <- Accounts.get_user_by(username: username, password: password),
+         {:ok, token, _claims} <- Guardian.encode_and_sign(user) do
+      conn
+      |> render("token.json", token: token, user: user)
+    else
+      _error ->
+        {:error, :unauthorized}
+    end
+  end
+
+  def me(conn, _) do
+    case Guardian.Plug.current_resource(conn, key: :impersonate) do
+      %User{} = user ->
+        render(conn, "show.json", user: user)
+      nil -> {:error, :unauthorized}
     end
   end
 

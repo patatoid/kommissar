@@ -3,6 +3,7 @@ defmodule KommissarWeb.UserControllerTest do
 
   alias Kommissar.Accounts
   alias Kommissar.Accounts.User
+  alias KommissarWeb.Guardian
 
   @create_attrs %{
     password: "some password",
@@ -67,6 +68,48 @@ defmodule KommissarWeb.UserControllerTest do
     test "renders errors when data is invalid", %{conn: conn, user: user} do
       conn = put(conn, Routes.user_path(conn, :update, user), user: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
+    end
+  end
+
+  describe "login" do
+    setup [:create_user]
+
+    test "renders 401 when not authorized", %{conn: conn} do
+      conn = post(
+        conn,
+        Routes.user_path(conn, :login),
+        %{"username" => "bad username", "password" => "bad password"}
+      )
+      assert response(conn, 401)
+    end
+
+    test "renders user when user is authenticated", %{conn: conn, user: %User{id: id} = user} do
+      {:ok, token, _claims} = Guardian.encode_and_sign(user)
+      conn = conn
+             |> put_req_header("authorization", "Bearer #{token}")
+             |> post(
+               Routes.user_path(conn, :login),
+               %{"username" => "some username", "password" => "some password"}
+             )
+      assert %{"access_token" => token, "data" => %{"id" => ^id}} = json_response(conn, 200)
+      assert token
+    end
+  end
+
+  describe "me" do
+    setup [:create_user]
+
+    test "renders 401 when not authorized", %{conn: conn} do
+      conn = get(conn, Routes.user_path(conn, :me))
+      assert response(conn, 401)
+    end
+
+    test "renders user when user is authenticated", %{conn: conn, user: %User{id: id} = user} do
+      {:ok, token, _claims} = Guardian.encode_and_sign(user)
+      conn = conn
+             |> put_req_header("authorization", "Bearer #{token}")
+             |> get(Routes.user_path(conn, :me))
+      assert %{"id" => ^id} = json_response(conn, 200)["data"]
     end
   end
 

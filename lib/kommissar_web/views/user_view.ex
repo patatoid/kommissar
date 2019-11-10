@@ -14,4 +14,9 @@ defmodule KommissarWeb.UserView do
     %{id: user.id,
       username: user.username}
   end
+
+  def render("token.json", %{token: token, user: user}) do
+    %{access_token: token,
+      data: render_one(user, UserView, "user.json")}
+  end
 end

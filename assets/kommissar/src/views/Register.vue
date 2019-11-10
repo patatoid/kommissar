@@ -46,6 +46,7 @@ export default {
       this.errors = null
       try {
         await this.user.save()
+        this.$router.push({ name: 'login' })
       } catch (errors) {
         this.errors = errors
       }

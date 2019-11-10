@@ -37,6 +37,10 @@ defmodule Kommissar.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_user_by(username: username, password: password) do
+    Repo.get_by(User, username: username, password_hash: User.hash(password))
+  end
+
   @doc """
   Creates a user.
 

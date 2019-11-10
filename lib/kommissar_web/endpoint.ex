@@ -42,5 +42,7 @@ defmodule KommissarWeb.Endpoint do
     key: "_kommissar_key",
     signing_salt: "vNQOYrZY"
 
+  plug CORSPlug
+
   plug KommissarWeb.Router
 end

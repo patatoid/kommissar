@@ -29,6 +29,11 @@ defmodule Kommissar.AccountsTest do
       assert Accounts.get_user!(user.id) == user
     end
 
+    test "get_user_by/1 returns the user with given username and password" do
+      user = user_fixture()
+      assert Accounts.get_user_by(username: "some username", password: "some password") == user
+    end
+
     test "create_user/1 with valid data creates a user" do
       assert {:ok, %User{} = user} = Accounts.create_user(@valid_attrs)
       assert user.password_hash == Accounts.User.hash("some password")

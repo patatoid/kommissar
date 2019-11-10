@@ -27,7 +27,11 @@ config :logger, :console,
 config :phoenix, :json_library, Jason
 
 config :kommissar, Kommissar.Accounts,
-  salt: "a very secret salt"
+  salt: "E3teu3BS1qxN3O0J8DVHU9VV0pIt6EiePeVmp5kdEd4dsz6t2N/U2MgZn6PmxgzQ"
+
+config :kommissar, KommissarWeb.Guardian,
+  issuer: "kommissar",
+  secret_key: "wcoLB0AwnMiAL06ajgw9fnENO2RrLDbJ2U5sxJfqIQqpHQ5/W7xAUGHiPQ2bNT79"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
