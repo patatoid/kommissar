@@ -1,0 +1,26 @@
+{
+  "name": "kommissar",
+  "version": "1.0.0",
+  "description": "_Kommissar_ Is a lightweight CRM aimed at artists who take commissions.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/patatoid/kommissar.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/patatoid/kommissar/issues"
+  },
+  "homepage": "https://github.com/patatoid/kommissar#readme",
+  "dependencies": {
+    "phoenix": "^1.4.11"
+  }
+}

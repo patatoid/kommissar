@@ -19,8 +19,9 @@ defmodule KommissarWeb.Router do
     get "/", PageController, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", KommissarWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", KommissarWeb do
+    pipe_through :api
+
+    resources "/users", UserController, except: [:new, :edit]
+  end
 end
