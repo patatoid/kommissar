@@ -7,7 +7,5 @@ defmodule Kommissar.Repo.Migrations.TagRelationships do
       add :commission_id, references(:commissions, type: :uuid)
       add :tag_id, references(:tags, type: :uuid)
     end
-
-    
   end
 end

@@ -16,5 +16,6 @@ defmodule Kommissar.Repo.Migrations.CreateClients do
       timestamps()
     end
 
+    create index(:clients, [:tags])
   end
 end

@@ -20,7 +20,6 @@ defmodule Kommissar.Resources do
   def list_clients do
     Client
     |> Repo.all
-    |> Repo.preload(:tags)
   end
 
   @doc """
@@ -40,7 +39,6 @@ defmodule Kommissar.Resources do
   def get_client!(id) do 
     Client
     |> Repo.get!(id)
-    |> Repo.preload(:tags)
   end
 
   @doc """
@@ -122,7 +120,6 @@ defmodule Kommissar.Resources do
   def list_commissions do
     Commission
     |> Repo.all
-    |> Repo.preload(:tags)
   end
 
   @doc """
@@ -142,7 +139,6 @@ defmodule Kommissar.Resources do
   def get_commission!(id) do
     Commission
     |> Repo.get!(id)
-    |> Repo.preload(:tags)
   end
 
   @doc """
@@ -157,8 +153,9 @@ defmodule Kommissar.Resources do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_commission(attrs \\ %{}) do
-    %Commission{}
+  def create_commission(client, attrs \\ %{}) do
+    client 
+    |> Ecto.build_assoc(:commissions)
     |> Commission.changeset(attrs)
     |> Repo.insert()
   end

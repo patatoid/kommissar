@@ -9,11 +9,13 @@ defmodule Kommissar.Repo.Migrations.CreateCommissions do
       add :file_location, :string
       add :paid, :decimal
       add :price, :decimal
+
       add :client_id, references(:clients, on_delete: :nothing, type: :binary_id)
 
       timestamps()
     end
 
     create index(:commissions, [:client_id])
+    create index(:commissions, [:tags])
   end
 end
