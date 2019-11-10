@@ -38,7 +38,7 @@ defmodule Kommissar.ResourcesTest do
       assert client.name == "some name"
       assert client.premium == true
       assert client.social_media == %{}
-      assert client.tags == []
+      assert client.tags == ["kawaii", "admech", "btk"]
     end
 
     test "create_client/1 with invalid data returns error changeset" do
@@ -55,7 +55,7 @@ defmodule Kommissar.ResourcesTest do
       assert client.name == "some updated name"
       assert client.premium == false
       assert client.social_media == %{}
-      assert client.tags == []
+      assert client.tags == ["kawaii", "btk"]
     end
 
     test "update_client/2 with invalid data returns error changeset" do
@@ -79,16 +79,12 @@ defmodule Kommissar.ResourcesTest do
   describe "commissions" do
     alias Kommissar.Resources.Commission
 
-    @valid_attrs %{file_location: "some file_location", name: "some name", paid: "120.5", price: "120.5", tags: []}
+    @valid_attrs %{file_location: "some file_location", name: "some name", paid: "120.5", price: "120.5", tags: ["blap", "blubb"]}
     @update_attrs %{file_location: "some updated file_location", name: "some updated name", paid: "456.7", price: "456.7", tags: []}
-    @invalid_attrs %{file_location: nil, name: nil, paid: nil, price: nil, tags: nil}
+    @invalid_attrs %{file_location: nil, name: nil, paid: nil, price: nil, tags: []}
 
-    def commission_fixture(attrs \\ %{}) do
-      {:ok, commission} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Resources.create_commission()
-
+    def commission_fixture() do
+      {:ok, commission} = Resources.create_commission(client_fixture(), @valid_attrs)
       commission
     end
 
@@ -103,16 +99,16 @@ defmodule Kommissar.ResourcesTest do
     end
 
     test "create_commission/1 with valid data creates a commission" do
-      assert {:ok, %Commission{} = commission} = Resources.create_commission(@valid_attrs)
+      assert {:ok, %Commission{} = commission} = Resources.create_commission(client_fixture(), @valid_attrs)
       assert commission.file_location == "some file_location"
       assert commission.name == "some name"
       assert commission.paid == Decimal.new("120.5")
       assert commission.price == Decimal.new("120.5")
-      assert commission.tags == []
+      assert commission.tags == ["blap", "blubb"]
     end
 
     test "create_commission/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Resources.create_commission(@invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} = Resources.create_commission(client_fixture(), @invalid_attrs)
     end
 
     test "update_commission/2 with valid data updates the commission" do

@@ -14,7 +14,7 @@ nix-test: ## Run the test suite in a pure Nix environment
 	@nix-shell --pure --run "mix test"
 
 nix-bootstrap: ## Bootstrap the project's dependencies in a pure Nix environment
-	@nix shell --pure --run "make bootstrap"
+	@nix-shell --pure --run "make bootstrap"
 
 routes: ## Display the routes declared in the router
 	mix phx.routes
